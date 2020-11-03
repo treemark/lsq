@@ -1,0 +1,141 @@
+buildscript {
+	// This block defines the maven artifact repositories 
+	// the build script its self can pull from
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven {
+	      url "https://plugins.gradle.org/m2/"
+	    }
+	}
+
+	dependencies {
+		configurations.all { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
+	    classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.6.RELEASE")
+	}
+}
+// Spring and flyway gradle plugins
+plugins {
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+    id "org.flywaydb.flyway" version "5.2.4"
+}
+apply plugin: 'eclipse'
+//apply plugin: 'org.springframework.boot'
+
+// This block is applied to all the sub projects defined in the settings.gradle file 
+subprojects {
+	apply plugin: 'java'  
+	apply plugin: 'eclipse'
+	apply plugin: 'io.spring.dependency-management'
+    //apply plugin: 'org.springframework.boot'
+
+
+
+
+	// The repositories the modules can pull dependencies from.
+	// Eventually the project will have it's own entry here, allowing
+	// auditing and control over which libraries are authorized for use
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven {
+	      url "https://plugins.gradle.org/m2/"
+	    }
+	}
+	
+	// A task to produce a single 'fat jar' containing all the dependencies of a module
+	// in a single jar.
+	task fatJar(type: Jar) {
+	    manifest {
+	        attributes 'Main-Class': "com.lsq.${project.name}.Main"
+	    }
+	    baseName = "${project.name}.fat"
+	    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+		exclude 'META-INF/*.RSA'
+		exclude 'META-INF/*.SF'
+		exclude 'META-INF/*.DSA'
+	    with jar
+	}
+	
+	
+	clean.doFirst {
+	    //delete "bin"
+	}
+	
+	// Dependencies that all modules share. They are able to define their own
+	// additional dependencies within their own build.gradle files
+	dependencies {
+		['org.springframework.boot:spring-boot-starter-parent:2.2.11.RELEASE'
+		   ,'org.springframework.boot:spring-boot:2.2.11.RELEASE'
+		 ].each { dep ->
+		  compile(dep) {
+		     exclude module: "logback-classic"
+		     exclude module: "spring-boot-starter-logging"
+		  }
+		 }
+		
+		['org.springframework.boot:spring-boot-starter-test:2.2.11.RELEASE' ].each { dep ->
+			testCompile(dep) {
+		     exclude module: "logback-classic"
+		     exclude module: "spring-boot-starter-logging"
+		    }
+		}
+		
+		testCompile 'junit:junit:4.12'
+		compile 'org.slf4j:slf4j-log4j12:1.7.26'
+		
+		compile ( 'com.github.docker-java:docker-java:3.1.3') {
+			exclude module: "guava"
+		}
+		
+		compile 'javax.activation:activation:1.1.1'
+		
+		compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
+		
+		
+	}
+	
+	// Allows the build script to access the spring application.properties of a module.
+    if (file("${project.projectDir}/src/main/resources/application.properties").exists()) {
+    	println "Loading props from ${project.projectDir}/src/main/resources/application.properties"
+        def localProperties = new Properties()
+        localProperties.load(new FileInputStream("${project.projectDir}/src/main/resources/application.properties"))
+        localProperties.each { prop -> project.ext.set(prop.key, prop.value) }
+    } else {
+    }
+    
+    // Ensure some basic project folder structure
+    mkdir "${project.projectDir}/src/main/java"
+	mkdir "${project.projectDir}/src/main/resources"
+	
+	// Defines behavior of the eclipse plugin. This block defines what happens
+	// when you run gradlew.bat eclipse to generate .classpath, .settings and .project
+	// files
+    eclipse {
+        classpath {
+            downloadSources = true
+            downloadJavadoc = true
+            //containers 'org.eclipse.buildship.core.gradleclasspathcontainer'
+
+            if (file('WebContent/WEB-INF').exists())
+                defaultOutputDir = file('WebContent/WEB-INF/classes')
+
+            file {
+            	
+                whenMerged { classpath ->
+                    classpath.entries.removeAll { entry ->
+                           (entry.kind == 'lib' 
+                        	&&(entry.path.endsWith('/build/resources/test') || 
+                         	 entry.path.endsWith('build/classes/java/test'))
+                        )
+                    }
+                }
+            }
+        }
+    }
+   
+}
+
+
+
+

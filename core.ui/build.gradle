@@ -1,0 +1,15 @@
+dependencies {
+	compile project(':core')
+	compile 'io.springfox:springfox-swagger2:2.9.2'
+	compile 'io.springfox:springfox-swagger-ui:2.9.2'
+
+	['org.springframework.boot:spring-boot-starter-web:2.2.11.RELEASE',
+	 'org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.1.RELEASE'].each { dep ->
+	  compile(dep) {
+	     exclude module: "logback-classic"
+	     exclude module: "spring-boot-starter-logging"
+	  }
+	}
+	
+}
+

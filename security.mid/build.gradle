@@ -1,0 +1,15 @@
+plugins {
+    id "io.spring.dependency-management" 
+    id "org.flywaydb.flyway" 
+}
+
+dependencies {
+	compile project(':core.db')
+	compile project(':core.rest')
+	compile project(':security.db')
+	compile project(':core.docker')
+	
+}
+
+
+//println "DBURL: ${ project.ext.get('security.db.url')}"

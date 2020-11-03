@@ -1,0 +1,47 @@
+plugins {
+    id "io.spring.dependency-management" 
+    id "org.flywaydb.flyway" 
+    id 'com.benjaminsproule.swagger' version '1.0.8'
+}
+
+dependencies {
+	compile project(':core.rest')
+	compile project(':security.mid')
+}
+
+task buildDockerImage(type:Exec) {
+	dependsOn {fatJar}
+	logging.captureStandardOutput LogLevel.INFO
+	doFirst {
+		logger.info('Building Docker Image')
+	}
+    workingDir "$buildDir"
+    commandLine "docker", "build", "-t", "lsqdemo/${project.name}", ".."
+}
+
+build.dependsOn(buildDockerImage)
+
+assemble {
+	doLast {
+		buildDockerImage
+	}
+}
+// assemble.finalizedBy(
+// 	generateSwaggerDocumentation,
+// 	buildDockerImage
+// )
+
+swagger {
+    apiSource {
+    	springmvc=true
+    	locations=["com.lsq.security"]
+    	swaggerDirectory="$buildDir"
+    	basePath="/api"
+    	schemes=["http"]
+    	info {
+	        title = 'Package 1'
+	        version = 'v1'
+	        description = 'Documentation for Package 1'
+    	}	
+    }
+}

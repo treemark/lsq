@@ -1,0 +1,14 @@
+dependencies {
+	compile project(':core')
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+	compile 'net.ttddyy:datasource-proxy:1.5.1'
+	compile 'org.flywaydb:flyway-core:5.2.4'
+	//compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '9.0.22'
+	//compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
+	//compile 'com.amihaiemil.web:docker-java-api:0.0.10'
+	compile group: 'org.glassfish', name: 'javax.json', version: '1.1.4'
+	compile group: 'com.github.jnr', name: 'jnr-unixsocket', version: '0.23'
+	
+}
+
+//println "DBURL: ${ project.ext.get('security.db.url')}"

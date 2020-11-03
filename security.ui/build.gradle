@@ -1,0 +1,49 @@
+plugins {
+    id "io.spring.dependency-management" 
+    id "com.moowork.node" version "1.3.1"
+    id 'com.benjaminsproule.swagger' version '1.0.8'
+    
+}
+
+dependencies {
+	//compile project(':security.mid')
+	compile project(':core.ui')
+	compile project(':core')
+	//compile project(':security.api')
+	
+}
+
+//println "DBURL: ${ project.ext.get('security.db.url')}"
+
+node {
+  version = '12.11.1'
+  npmVersion = '6.11.3'
+  download = true
+  workDir = file("${project.buildDir}/nodejs")
+  npmWorkDir = file("${project.buildDir}/npm")
+  yarnWorkDir = file("${project.buildDir}/yarn")
+  nodeModulesDir = file("${project.projectDir}")
+  println("Node Project Dir: ${project.projectDir}")
+}
+
+clean.doFirst {
+    delete "${project.projectDir}/src/main/resources/public/"
+    delete "${project.projectDir}/node_modules/"
+}
+
+task npmBuild(type: NpmTask) {
+  args = ['run-script','build']
+}
+
+assemble.dependsOn(npmBuild) 
+build.dependsOn(
+  npmBuild
+)
+
+evaluationDependsOn(':security.api')
+
+npmBuild.dependsOn(
+  npmInstall,
+  ':security.api:generateSwaggerDocumentation'
+) 
+

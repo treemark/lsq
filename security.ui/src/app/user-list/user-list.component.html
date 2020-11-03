@@ -1,0 +1,29 @@
+<div class="card my-5">
+  <div class="card-body">
+
+      <div class="form-group" [formGroup]="filterGroup">
+        <label>Filter Criteria</label>
+        <input type="text" formControlName="criteria"
+          class="form-control" placeholder="Enter filter criteria">
+      </div>
+
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+          <td><a routerLink="/edituser/{{user.id}}" class="btn btn-info">Edit</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
