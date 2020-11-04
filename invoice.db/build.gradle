@@ -1,0 +1,18 @@
+plugins {
+    id "io.spring.dependency-management" 
+    id "org.flywaydb.flyway" 
+}
+
+dependencies {
+	compile project(':core.db')
+	compile project(':core.docker')
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+	compile 'net.ttddyy:datasource-proxy:1.5.1'
+	compile 'org.flywaydb:flyway-core:5.2.4'
+	compile group: 'org.apache.tomcat', name: 'tomcat-jdbc', version: '9.0.22'
+	//compile group: 'org.springframework', name: 'spring-jdbc', version: '5.1.8.RELEASE'
+
+	testCompile project(':core.db').sourceSets.test.output
+}
+
+//println "DBURL: ${ project.ext.get('security.db.url')}"

@@ -9,3 +9,7 @@ include ':security.api'
 include ':core.rest'
 include ':core.ui'
 include ':security.ui'
+include ':invoice.db'
+include ':invoice.mid'
+include ':invoice.api'
+

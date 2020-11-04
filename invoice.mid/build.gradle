@@ -1,0 +1,16 @@
+plugins {
+    id "io.spring.dependency-management" 
+    id "org.flywaydb.flyway" 
+}
+
+dependencies {
+	compile project(':core.db')
+	compile project(':core.rest')
+	compile project(':invoice.db')
+	compile project(':core.docker')
+	compile group: 'org.apache.commons', name: 'commons-csv', version: '1.8'
+
+}
+
+
+//println "DBURL: ${ project.ext.get('security.db.url')}"
