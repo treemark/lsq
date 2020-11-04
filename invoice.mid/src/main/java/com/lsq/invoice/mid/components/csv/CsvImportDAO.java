@@ -52,7 +52,8 @@ public class CsvImportDAO {
 					+ "i.paymentDate = :paymentDate ,\n"//
 					+ "i.invoiceDate = :invoiceDate ,\n"//
 					+ "i.paymentAmount = :paymentAmount ,\n"//
-					+ "i.invoiceAmount = :invoiceAmount \n" //
+					+ "i.invoiceAmount = :invoiceAmount ,\n" //
+					+ " i.state = :state \n"//
 					+ "where i.supplierId = :supplierId \n"//
 					+ "and i.invoiceId = :invoiceId \n";
 			Query q = em.createQuery(hql);
@@ -63,6 +64,7 @@ public class CsvImportDAO {
 			q.setParameter("invoiceAmount", i.getInvoiceAmount());
 			q.setParameter("supplierId", i.getSupplierId());
 			q.setParameter("invoiceId", i.getInvoiceId());
+			q.setParameter("state", i.getState());
 			int rowsEffected = q.executeUpdate();
 			if (rowsEffected == 0) {
 				em.persist(i);

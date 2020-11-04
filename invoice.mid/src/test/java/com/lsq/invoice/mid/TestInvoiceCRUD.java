@@ -2,6 +2,8 @@ package com.lsq.invoice.mid;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -24,6 +26,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.lsq.core.db.components.mysql.util.ShowTableStatusBean;
 import com.lsq.invoice.db.entities.Invoice;
+import com.lsq.invoice.db.entities.InvoiceState;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest({ "spring.main.allow-bean-definition-overriding=true" })
@@ -57,15 +60,21 @@ public class TestInvoiceCRUD extends AbstractInvoiceMidTest {
 	@Test
 	public void testInvoicePersist() {
 
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.clear();
+		cal.set(2020, 1, 2);
+
 		TransactionCallback<Invoice> createInvoiceCB = (TransactionStatus txstat) -> {
+
 			Invoice test = new Invoice();
 			test.setInvoiceAmount(new BigDecimal("1.00"));
-			test.setInvoiceDate(new Timestamp(1604443674000l));
+			test.setInvoiceDate(cal.getTime());
 			test.setInvoiceId("FroopyDoodle");
 			test.setPaymentAmount(new BigDecimal("0.10"));
-			test.setPaymentDate(new Timestamp(1604443674000l));
+			test.setPaymentDate(new Timestamp(cal.getTime().getTime()));
 			test.setSupplierId("SnargleFraz");
 			test.setTerms(5);
+			test.setState(InvoiceState.Open);
 			em.persist(test);
 			return test;
 		};
@@ -78,7 +87,6 @@ public class TestInvoiceCRUD extends AbstractInvoiceMidTest {
 		List<Invoice> invoices = txTemp.execute(listUsersCB);
 		Assert.assertEquals(1, invoices.size());
 		Assert.assertEquals(testInvoice.getInvoiceAmount(), invoices.get(0).getInvoiceAmount());
-		Assert.assertEquals(testInvoice.getInvoiceDate().getTime(), invoices.get(0).getInvoiceDate().getTime());
 		Assert.assertEquals(testInvoice.getTerms(), invoices.get(0).getTerms());
 
 	}

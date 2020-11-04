@@ -8,6 +8,7 @@ CREATE TABLE `Invoice` (
    `invoiceDate` DATE NOT NULL,
    `paymentAmount` DECIMAL(13,2)  NULL,
     `invoiceAmount` DECIMAL(13,2) NOT NULL,
+    `state` varchar(50) NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `invSupKey` (`invoiceId`,`supplierId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4

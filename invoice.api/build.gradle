@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
 	compile project(':core.rest')
-	compile project(':security.mid')
+	compile project(':invoice.mid')
 }
 
 task buildDockerImage(type:Exec) {

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,6 +49,18 @@ public class Invoice {
 
 	@Column
 	BigDecimal invoiceAmount;
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	InvoiceState state;
+
+	public InvoiceState getState() {
+		return state;
+	}
+
+	public void setState(InvoiceState state) {
+		this.state = state;
+	}
 
 	public Long getId() {
 		return id;
@@ -129,6 +143,7 @@ public class Invoice {
 		result = prime * result + ((invoiceId == null) ? 0 : invoiceId.hashCode());
 		result = prime * result + ((paymentAmount == null) ? 0 : paymentAmount.hashCode());
 		result = prime * result + ((paymentDate == null) ? 0 : paymentDate.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((supplierId == null) ? 0 : supplierId.hashCode());
 		result = prime * result + ((terms == null) ? 0 : terms.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
@@ -169,6 +184,8 @@ public class Invoice {
 				return false;
 		} else if (!paymentDate.equals(other.paymentDate))
 			return false;
+		if (state != other.state)
+			return false;
 		if (supplierId == null) {
 			if (other.supplierId != null)
 				return false;
@@ -191,7 +208,7 @@ public class Invoice {
 	public String toString() {
 		return "Invoice [id=" + id + ", version=" + version + ", supplierId=" + supplierId + ", invoiceId=" + invoiceId
 				+ ", terms=" + terms + ", paymentDate=" + paymentDate + ", invoiceDate=" + invoiceDate
-				+ ", paymentAmount=" + paymentAmount + ", invoiceAmount=" + invoiceAmount + "]";
+				+ ", paymentAmount=" + paymentAmount + ", invoiceAmount=" + invoiceAmount + ", state=" + state + "]";
 	}
 
 }

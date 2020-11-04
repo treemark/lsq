@@ -46,7 +46,7 @@ public class TomcatConfiguration implements WebMvcConfigurer {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
 		factory.setPort(this.portNumber);
 		factory.setContextPath("");
-		// factory.setBaseDirectory(baseDirectory);
+		// factory.setBaseDirectory("");
 
 		factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notfound.html"));
 		TomcatContextCustomizer ctxCustomizer = new TomcatContextCustomizer() {

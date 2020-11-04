@@ -30,7 +30,6 @@ import io.swagger.annotations.Api;
 @RestController
 @Api(tags = { "UserManagement" })
 @RequestMapping(value = "/usermgmt", produces = "application/json; charset=UTF-8")
-
 public class UserManagementServiceImpl implements UserManagementService {
 
 	@PersistenceContext

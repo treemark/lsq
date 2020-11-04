@@ -21,6 +21,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.lsq.invoice.db.entities.Invoice;
+import com.lsq.invoice.db.entities.InvoiceState;
 import com.lsq.invoice.mid.components.csv.CsvImportDAO.ImportAction;
 
 @Service
@@ -33,6 +34,20 @@ public class CsvImportService {
 
 	@Autowired
 	TransactionTemplate txTemp;
+
+	public InvoiceState determineState(Invoice i) {
+//		BigDecimal payAmount = (i.getPaymentAmount() != null) ? i.getPaymentAmount() : new BigDecimal("0.00");
+//		Date invDate = i.getInvoiceDate();
+//		Date payDate = i.getPaymentDate();
+//
+//		if (i.getPaymentAmount() == null)
+//			return InvoiceState.Late;
+//		if (i.getInvoiceAmount().subtract(i.getPaymentAmount()).floatValue() <= 0f) {
+//			return InvoiceState.Closed;
+//		} else if (i.getInvoiceAmount())
+//
+		return null;
+	}
 
 	public List<CsvRowResult> importCsv(String csv) {
 		List<CsvRowResult> results = new ArrayList<CsvRowResult>();
