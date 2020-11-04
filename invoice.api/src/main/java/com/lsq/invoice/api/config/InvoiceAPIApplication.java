@@ -30,7 +30,6 @@ import com.lsq.invoice.mid.config.InvoiceMidConfiguration;
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class) })
 //@SpringBootApplication
 @EnableWebMvc
-
 public class InvoiceAPIApplication {
 	public static void main(String[] args) throws ParseException {
 		SpringApplication.run(InvoiceAPIApplication.class, args);

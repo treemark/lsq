@@ -64,12 +64,12 @@ public class CsvImportService {
 							ImportAction action = dao.updateOrInsert(inv);
 							switch (action) {
 							case INSERTED:
-								logger.info(
-										"Inserted new record for: " + inv.getSupplierId() + " " + inv.getInvoiceId());
+//								logger.info(
+//										"Inserted new record for: " + inv.getSupplierId() + " " + inv.getInvoiceId());
 								break;
 							case UPDATED:
-								logger.info("Updated existing record for: " + inv.getSupplierId() + " "
-										+ inv.getInvoiceId());
+//								logger.info("Updated existing record for: " + inv.getSupplierId() + " "
+//										+ inv.getInvoiceId());
 								break;
 							case ERROR:
 								failure = true;
